@@ -286,7 +286,7 @@ function drawEmoji(canvas, img, face) {
 // New Game
 function startNewGame() {
   // Start game that'll end in 1.5 minutes
-  fullGameTimeout = setTimeout(onGameCompleted, 16000);
+  fullGameTimeout = setTimeout(onGameCompleted, 92000);
 
   // Start round (timeout helps with the overall player experience)
   clearTimeout(timeout);
