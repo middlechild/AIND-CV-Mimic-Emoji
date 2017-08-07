@@ -143,8 +143,9 @@ function onStart() {
   if (detector && !detector.isRunning) {
     resetView();
     detector.start();  // start detector
-    $(".btn-play").fadeOut(300); // Hide large play button
   }
+  $(".btn-play").fadeOut(300); // Hide large play button
+
   writeLogs("STARTING...");
 }
 
@@ -153,8 +154,9 @@ function onStop() {
   if (detector && detector.isRunning) {
     detector.removeEventListener();
     detector.stop();  // stop detector
-    $(".btn-play").fadeIn(300); // Show large play button
   }
+  $(".btn-play").fadeIn(300); // Show large play button
+
   // Stop timer and timeout
   clearInterval(timer);
   clearTimeout(timeout);
@@ -167,12 +169,12 @@ function onReset() {
   if (detector && detector.isRunning) {
     detector.reset();
   }
+  $(".btn-play").fadeIn(300); // Show large play button
   resetView();
+
   writeLogs("GAME RESET");
 
-  // TODO (optional): You can restart the game as well ✔
-  startNewGame();
-  $(".btn-play").hide(); // Hide large play button
+  // TODO (optional): You can restart the game as well
 };
 
 // Add a callback to notify when camera access is allowed
