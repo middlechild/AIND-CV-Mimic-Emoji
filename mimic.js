@@ -60,7 +60,7 @@ function setScore(correct, total) {
 
 // Display log messages and tracking results
 function log(node_name, msg) {
-  $(node_name).append("<span>" + msg + "</span><br />");
+  $(node_name).append("<span>" + msg + "</span><br/>");
 }
 
 // Write tracking results
@@ -122,9 +122,10 @@ function resetView() {
   score = 0;
   attempts = 0;
 
-  // Stop timer and timeout
-  clearInterval(timer);
+  // Stop timer and timeouts
+  clearTimeout(fullGameTimeout);
   clearTimeout(timeout);
+  clearInterval(timer);
 
   // Update Scores
   setScore(0, 0); // reset scores
@@ -142,7 +143,7 @@ function onStart() {
   if (detector && !detector.isRunning) {
     resetView();
     detector.start();  // start detector
-    $(".btn-play").fadeOut(300); // Hide large play button on video container
+    $(".btn-play").fadeOut(300); // Hide large play button
   }
   writeLogs("STARTING...");
 }
@@ -152,7 +153,7 @@ function onStop() {
   if (detector && detector.isRunning) {
     detector.removeEventListener();
     detector.stop();  // stop detector
-    $(".btn-play").fadeIn(300); // Show large play button on video container
+    $(".btn-play").fadeIn(300); // Show large play button
   }
   // Stop timer and timeout
   clearInterval(timer);
@@ -171,6 +172,7 @@ function onReset() {
 
   // TODO (optional): You can restart the game as well ✔
   startNewGame();
+  $(".btn-play").hide(); // Hide large play button
 };
 
 // Add a callback to notify when camera access is allowed
@@ -356,11 +358,14 @@ function onGameCompleted() {
     detector.stop();  // stop detector
   }
 
+  // Voiding current attempt for fairness
+  attempts = (attempts < 1) ? 0 : attempts-1;
+
   // Provide feedback to player
   var accuracy = Math.round((score/attempts) * 100);
   var message = "";
 
-  if (accuracy === 100) { // 110%
+  if (accuracy === 100) { // 100%
     message = '<span class="final-message-color">' + score + '/' + attempts +
               '</span><span class="final-message"> Perfect! </span>&#127942;';
   } else if (accuracy < 100 && accuracy > 79) { // 80% to 99%
@@ -369,13 +374,13 @@ function onGameCompleted() {
   } else if (accuracy < 80 && accuracy > 49) { // 50% to 79%
     message = '<span class="final-message-color">' + score + '/' + attempts +
               '</span><span class="final-message"> Great job! </span> &#128077;';
-  } else if (accuracy < 50 && accuracy > 29) { // 30% to 49%
+  } else if (accuracy < 50 && accuracy > 39) { // 40% to 49%
     message = '<span class="final-message-color">' + score + '/' + attempts +
               '</span><span class="final-message"> Good job! </span> &#128077;';
-  } else if (accuracy < 30 && accuracy > 9) { // 9% to 29%
+  } else if (accuracy < 40 && accuracy > 19) { // 20% to 39%
     message = '<span class="final-message-color">' + score + '/' + attempts +
               '</span><span class="final-message"> More practice! </span> &#128584;';
-  } else { // < 10%
+  } else { // < 20%
     message = '<span class="final-message-color">' + score + '/' + attempts +
               '</span><span class="final-message"> Ouch! </span> &#129318;';
   }
