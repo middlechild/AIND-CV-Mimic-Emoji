@@ -1,0 +1,54 @@
+<html>
+
+<head>
+  <title>Mimic Me!</title>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://download.affectiva.com/js/3.2/affdex.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Pangolin" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="vendor/bootstrap-flat.min.css" />
+  <link rel="stylesheet" href="mimic.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body class="mimic-game">
+  <div class="container">
+    <div class="row game-row">
+      <div class="col-md-8 game-video">
+        <div id="camera" class="camera"></div>
+        <div id="feedback-container"  class="feedback">
+          <p id="feedback">&#10004;</p>
+        </div>
+        <div id="results-container" class="results">
+          <div id="results"></div>
+        </div>
+        <div id="logs-container"  class="logs">
+          <p id="logs"></p>
+        </div>
+        <div id="btn-play" type="button" class="btn btn-play" onclick="onStart()">Play</div>
+      </div>
+      <div class="col-md-4 game-details">
+        <div class="title">
+          <h1>Mimic Me!</h1>
+        </div>
+        <div id="game" class="game-box">
+          <div id="target" class="target">&#128522;</div>
+          <div id="score" class="score">Score: 0/0</div>
+        </div>
+        <div id="controls" class="controls">
+          <div type="button" class="btn btn-success" id="start" onclick="onStart()">Start</div>
+          <div type="button" class="btn btn-danger" id="stop" onclick="onStop()">Stop</div>
+          <div type="button" class="btn btn-info" id="reset" onclick="onReset()">Reset</div>
+        </div>
+        <div id="instructions" class="instructions">
+          <p><span>Instructions:</span><br>
+            Mimic the emojis to score points!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="mimic.js"></script>
+</body>
+
+</html>
