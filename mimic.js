@@ -8,7 +8,7 @@ const DEBUG = false;
 var currentIndex = -1;
 var score = 0;
 var attempts = 0;
-var fullGameTimeout;
+var gameEndTimeout;
 var timeout;
 var timer;
 
@@ -123,7 +123,7 @@ function resetView() {
   attempts = 0;
 
   // Stop timer and timeouts
-  clearTimeout(fullGameTimeout);
+  clearTimeout(gameEndTimeout);
   clearTimeout(timeout);
   clearInterval(timer);
 
@@ -288,7 +288,7 @@ function drawEmoji(canvas, img, face) {
 // New Game
 function startNewGame() {
   // Start game that'll end in 1.5 minutes
-  fullGameTimeout = setTimeout(onGameCompleted, 92000);
+  gameEndTimeout = setTimeout(onGameCompleted, 92000);
 
   // Start round (timeout helps with the overall player experience)
   clearTimeout(timeout);
@@ -348,7 +348,7 @@ function recordAttempt(result) {
 // Stop game when completed
 function onGameCompleted() {
   // Clear timer and timeouts
-  clearTimeout(fullGameTimeout);
+  clearTimeout(gameEndTimeout);
   clearTimeout(timeout);
   clearInterval(timer);
 
