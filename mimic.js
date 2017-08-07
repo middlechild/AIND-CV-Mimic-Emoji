@@ -141,39 +141,42 @@ function resetView() {
 // Start button
 function onStart() {
   if (detector && !detector.isRunning) {
-    resetView();
     detector.start();  // start detector
+    resetView(); // Reset UI
+    $(".btn-play").fadeOut(300); // Hide large play button
+    writeLogs("STARTING...");
   }
-  $(".btn-play").fadeOut(300); // Hide large play button
-
-  writeLogs("STARTING...");
 }
 
 // Stop button
 function onStop() {
   if (detector && detector.isRunning) {
     detector.removeEventListener();
-    detector.stop();  // stop detector
+    detector.stop(); // stop detector
+    $(".btn-play").fadeIn(300); // Show large play button
+    writeLogs("GAME STOPPED");
   }
-  $(".btn-play").fadeIn(300); // Show large play button
 
-  // Stop timer and timeout
-  clearInterval(timer);
+  // Stop timer and timeouts
+  clearTimeout(gameEndTimeout);
   clearTimeout(timeout);
-
-  writeLogs("GAME STOPPED");
+  clearInterval(timer);
 };
 
 // Reset button
 function onReset() {
   if (detector && detector.isRunning) {
-    detector.reset();
+    detector.stop(); // stop detector
+    detector.reset(); // reset detector
+    writeLogs("GAME RESET");
   }
-  resetView();
 
-  writeLogs("GAME RESET");
+  resetView(); // Reset UI
 
-  // TODO (optional): You can restart the game as well
+  // TODO (optional): You can restart the game as well ✔
+  // Stopping and then resetting is a more robust option.
+  // Opting to show the large Play button instead, so the player can resume when ready.
+  $(".btn-play").fadeIn(300); // Show large play button
 };
 
 // Add a callback to notify when camera access is allowed
@@ -184,18 +187,17 @@ detector.addEventListener("onWebcamConnectSuccess", function() {
 // Add a callback to notify when camera access is denied
 detector.addEventListener("onWebcamConnectFailure", function() {
   writeLogs("WEBCAM ACCESS DENIED");
-  console.log("Webcam access denied");
 });
 
 // Add a callback to notify when detector is stopped
 detector.addEventListener("onStopSuccess", function() {
-  writeLogs("The detector reports stopped", true);
+  writeLogs("GAME STOPPED SUCCESSFULLY", true);
   $("#results").html("");
 });
 
 // Add a callback to notify when the detector is initialized and ready for running
 detector.addEventListener("onInitializeSuccess", function() {
-  writeLogs("The detector reports initialized", true);
+  writeLogs("GAME READY");
   //Display canvas instead of video feed because we want to draw the feature points on it
   $("#face_video_canvas").css("display", "block");
   $("#face_video").css("display", "none");
@@ -291,8 +293,7 @@ function startNewGame() {
   // Start game that'll end in 1.5 minutes
   gameEndTimeout = setTimeout(onGameCompleted, 92000);
 
-  // Start round (timeout helps with the overall player experience)
-  clearTimeout(timeout);
+  // Start first round (timeout helps with the overall player experience)
   timeout = setTimeout(changeEmoji, 2000);
 
   writeLogs("GAME STARTED");
@@ -356,10 +357,10 @@ function onGameCompleted() {
   // Stop game but not reset
   if (detector && detector.isRunning) {
     detector.removeEventListener();
-    detector.stop();  // stop detector
+    detector.stop(); // stop detector
   }
 
-  // Voiding current attempt for fairness
+  // Voiding current attempt (for game fairness)
   attempts = (attempts < 1) ? 0 : attempts-1;
 
   // Provide feedback to player
