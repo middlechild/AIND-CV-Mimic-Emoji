@@ -169,7 +169,6 @@ function onReset() {
   if (detector && detector.isRunning) {
     detector.reset();
   }
-  $(".btn-play").fadeIn(300); // Show large play button
   resetView();
 
   writeLogs("GAME RESET");
