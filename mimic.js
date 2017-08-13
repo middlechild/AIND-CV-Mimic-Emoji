@@ -315,7 +315,7 @@ function changeEmoji() {
 
   // Adjust timer
   clearInterval(timer);
-  // Player will fail at the end of the end of the interval,
+  // Player will fail at the end of the interval,
   // if successful the timer will reset before failing
   timer = setInterval(function(){recordAttempt("fail")}, 8000);
 }
